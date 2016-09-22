@@ -10,7 +10,7 @@ An Event listener for swiping gestures with pure javascript only, no dependency 
  - then use it like this:
 
 ```js
-var mySwipeIt = new SwipeIt('#your_element_selector_here');
+var mySwipeIt = new SwipeIt('your_element_selector_here');
 mySwipeIt
 .on('swipeLeft',function(e){
 	//your handler here
