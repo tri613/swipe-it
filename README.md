@@ -1,8 +1,7 @@
 #Swipe-it
 
-An Event handler for swiping gestures with pure javascript only, no dependency needed.
+An Event listener for swiping gestures with pure javascript only, no dependency needed.
 
----
 
 ## Usage
 
@@ -23,7 +22,7 @@ mySwipeIt
 ```
 - Bang!
 
----
+
 
 ## Events
 
@@ -32,5 +31,5 @@ mySwipeIt
 - swipeUp
 - swipeDown
 
-**NOTICE**
+**NOTICE:**
 Swipe events won't trigger if the distance between start point and end point is less than `30px`.
