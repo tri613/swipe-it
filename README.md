@@ -2,8 +2,6 @@
 
 An Event handler for swiping gestures with vanilla js.
 
----
-
 ## Usage
 
  - include `swipe-it.js` into your file.
@@ -23,8 +21,6 @@ mySwipeIt
 ```
 - Bang!
 
----
-
 ## Events
 
 - swipeLeft
@@ -32,5 +28,5 @@ mySwipeIt
 - swipeUp
 - swipeDown
 
-**NOTICE**
+**NOTICE**  
 Swipe events won't trigger if the distance between start point and end point is less than `30px`.
