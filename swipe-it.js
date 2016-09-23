@@ -1,6 +1,7 @@
 /*===========================
   Swipe-it v1.1.1
   An event listener for swiping gestures with vanilla js.
+  https://github.com/tri613/swipe-it
 
   @Create 2016/09/22
   @Update 2016/09/23
