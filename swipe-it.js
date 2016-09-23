@@ -1,5 +1,5 @@
 /*===========================
-  Swipe-it v1.1.0
+  Swipe-it v1.1.1
   An event listener for swiping gestures with vanilla js.
 
   @Create 2016/09/22
@@ -12,6 +12,7 @@
   'use strict';
 
   var _window = [window];
+  var _target = false;
 
   function SwipeIt(selector) {
     var _elements = document.querySelectorAll(selector);
@@ -39,13 +40,15 @@
       _yStart = false;
       _xEnd = false;
       _yEnd = false;
+      _target = false;
     }
 
-    function mouseDownHandler(e){
-        _xStart = e.clientX;
-        _yStart = e.clientY;
-        listen('mousemove', mouseMoveHandler, _window);
-        listen('mouseup', mouseEndHandler, _window);
+    function mouseDownHandler(e) {
+      _xStart = e.clientX;
+      _yStart = e.clientY;
+      _target = e.target;
+      listen('mousemove', mouseMoveHandler, _window);
+      listen('mouseup', mouseEndHandler, _window);
     }
 
     function mouseMoveHandler(e) {
@@ -62,6 +65,7 @@
     }
 
     function touchStartHandler(e) {
+      _target = e.target;
       _xStart = e.touches[0].clientX;
       _yStart = e.touches[0].clientY;
     }
@@ -75,11 +79,11 @@
       if (_xStart && _yStart && _xEnd && _yEnd) {
         if (Math.abs(_xStart - _xEnd) > 30) { //horizontal
           var swipeEventString = (_xStart < _xEnd) ? 'swipeRight' : 'swipeLeft';
-          triggerEvent(swipeEventString, _elements);
+          triggerEvent(swipeEventString, _target);
         }
         if (Math.abs(_yStart - _yEnd) > 30) { //vertical
           var swipeEventString = (_yStart > _yEnd) ? 'swipeUp' : 'swipeDown';
-          triggerEvent(swipeEventString, _elements);
+          triggerEvent(swipeEventString, _target);
         }
       };
 
@@ -102,9 +106,14 @@
 
   function triggerEvent(eventString, elements) {
     var event = new Event(eventString);
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].dispatchEvent(event);
+    if (elements.constructor !== Array) {
+      elements.dispatchEvent(event);
+    } else {
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].dispatchEvent(event);
+      }
     }
+
   }
 
   //export
