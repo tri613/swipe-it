@@ -62,7 +62,7 @@
     function mouseEndHandler(e) {
       stopListen('mousemove', mouseMoveHandler, _window);
       stopListen('mouseup', mouseEndHandler, _window);
-      touchEndHandler();
+      touchEndHandler(e);
     }
 
     function touchStartHandler(e) {
