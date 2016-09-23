@@ -90,7 +90,6 @@
 
       init();
     }
-
   }
 
   function listen(event, handler, elements) {
@@ -114,7 +113,6 @@
         elements[i].dispatchEvent(event);
       }
     }
-
   }
 
   //export
