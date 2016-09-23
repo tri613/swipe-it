@@ -1,8 +1,9 @@
 /*===========================
-  Swipe-it v1.0.0
+  Swipe-it v1.1.0
   An Event handler for swiping gestures with vanilla js.
 
   @Create 2016/09/22
+  @Update 2016/09/23
   @Author Trina Lu
   ===========================*/
 
@@ -84,7 +85,7 @@
 
       init();
     }
-    
+
   }
 
   function listen(event, handler, elements) {
