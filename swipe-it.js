@@ -53,7 +53,7 @@
     }
 
     function mouseMoveHandler(e) {
-      e.preventDefault(); // **prevent drag event being triggered**
+      e.preventDefault(); // **prevent drag event from being triggered**
       if (!_xStart || !_yStart) return;
       _xEnd = e.clientX;
       _yEnd = e.clientY;
