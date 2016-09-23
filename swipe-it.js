@@ -1,5 +1,5 @@
 /*===========================
-  Swipe-it v1.1.1
+  Swipe-it v1.2.0
   An event listener for swiping gestures with vanilla js.
   https://github.com/tri613/swipe-it
 
@@ -86,6 +86,8 @@
           var swipeEventString = (_yStart > _yEnd) ? 'swipeUp' : 'swipeDown';
           triggerEvent(swipeEventString, _target);
         }
+
+        triggerEvent('swipe', _target);
       };
 
       init();
