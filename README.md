@@ -6,7 +6,7 @@ An event listener for swiping gestures with pure javascript only, no dependency 
 
 ## Usage
 
- - include `swipe-it.js` into your file.
+ - include `swipe-it.js` or `swipe-it.min.js` into your file.
  - then use it like this:
 
 ```js
