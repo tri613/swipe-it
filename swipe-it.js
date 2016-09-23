@@ -6,52 +6,58 @@
   @Author Trina Lu
   ===========================*/
 
-(function(window, document, exportName){
-  
+(function(window, document, exportName) {
+
   'use strict';
 
+  var _window = [window];
+
   function SwipeIt(selector) {
-    var _elements = document.querySelectorAll(selector);;
+    var _elements = document.querySelectorAll(selector);
     var _xStart, _yStart, _xEnd, _yEnd;
 
-     init();
-     ready();
-     
-     this.on = function(swipeEvent,callback){
-        listen(swipeEvent,callback);
-        return this;
-     }
+    init();
+    ready();
+
+    this.on = function(swipeEvent, callback) {
+      listen(swipeEvent, callback, _elements);
+      return this;
+    }
 
     function ready() {
-       listen('touchstart', touchStartHandler);
-       listen('touchmove', touchMoveHandler);
-       listen('touchend', touchEndHandler);
+      //for touching device
+      listen('touchstart', touchStartHandler, _elements);
+      listen('touchmove', touchMoveHandler, _elements);
+      listen('touchend', touchEndHandler, _elements);
+      //for mouse
+      listen('mousedown', mouseDownHandler, _elements);
     }
 
     function init() {
-       _xStart = null;
-       _yStart = null;
-       _xEnd = null;
-       _yEnd = null;
+      _xStart = false;
+      _yStart = false;
+      _xEnd = false;
+      _yEnd = false;
     }
 
-    function listen(event, handler) {
-      for (var i = 0; i < _elements.length; i++) {
-         _elements[i].addEventListener(event, handler);
-      }
+    function mouseDownHandler(e){
+        _xStart = e.clientX;
+        _yStart = e.clientY;
+        listen('mousemove', mouseMoveHandler, _window);
+        listen('mouseup', mouseEndHandler, _window);
     }
 
-    function stopListen(event, handler) {
-      for (var i = 0; i < _elements.length; i++) {
-         _elements[i].removeEventListener(event, handler);
-      }
+    function mouseMoveHandler(e) {
+      e.preventDefault(); // **prevent drag event being triggered**
+      if (!_xStart || !_yStart) return;
+      _xEnd = e.clientX;
+      _yEnd = e.clientY;
     }
 
-    function triggerEvent(eventString) {
-      var event = new Event(eventString);
-      for (var i = 0; i < _elements.length; i++) {
-       _elements[i].dispatchEvent(event);
-      }
+    function mouseEndHandler(e) {
+      stopListen('mousemove', mouseMoveHandler, _window);
+      stopListen('mouseup', mouseEndHandler, _window);
+      touchEndHandler();
     }
 
     function touchStartHandler(e) {
@@ -65,15 +71,38 @@
     }
 
     function touchEndHandler(e) {
+      if (_xStart && _yStart && _xEnd && _yEnd) {
         if (Math.abs(_xStart - _xEnd) > 30) { //horizontal
-           var swipeEventString = (_xStart < _xEnd) ? 'swipeRight' : 'swipeLeft';
-           triggerEvent(swipeEventString);
+          var swipeEventString = (_xStart < _xEnd) ? 'swipeRight' : 'swipeLeft';
+          triggerEvent(swipeEventString, _elements);
         }
         if (Math.abs(_yStart - _yEnd) > 30) { //vertical
-           var swipeEventString = (_yStart > _yEnd) ? 'swipeUp' : 'swipeDown';
-           triggerEvent(swipeEventString);
+          var swipeEventString = (_yStart > _yEnd) ? 'swipeUp' : 'swipeDown';
+          triggerEvent(swipeEventString, _elements);
         }
-        init();
+      };
+
+      init();
+    }
+    
+  }
+
+  function listen(event, handler, elements) {
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener(event, handler);
+    }
+  }
+
+  function stopListen(event, handler, elements) {
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].removeEventListener(event, handler);
+    }
+  }
+
+  function triggerEvent(eventString, elements) {
+    var event = new Event(eventString);
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].dispatchEvent(event);
     }
   }
 

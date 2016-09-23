@@ -1,6 +1,6 @@
 #Swipe-it
 
-An Event handler for swiping gestures with vanilla js.
+An Event handler for swiping gestures with vanilla js, no dependency needed.
 
 ## Usage
 
