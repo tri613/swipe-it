@@ -26,6 +26,7 @@ mySwipeIt
 
 ## Events
 
+- swipe (for all directions)
 - swipeLeft
 - swipeRight
 - swipeUp
