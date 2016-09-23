@@ -1,6 +1,6 @@
 #Swipe-it
 
-An Event listener for swiping gestures with pure javascript only, no dependency needed.  
+An event listener for swiping gestures with pure javascript only, no dependency needed.  
 ~~**Touch devices only.**~~
 Also supports mouse now! -- 2016/09/23
 
