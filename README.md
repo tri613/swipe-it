@@ -1,8 +1,8 @@
 #Swipe-it
 
 An Event listener for swiping gestures with pure javascript only, no dependency needed.  
---**:warning:Touch devices only.** (for now)--
-
+~~**Touch devices only.**~~
+Also supports mouse now! -- 2016/09/23
 
 ## Usage
 
@@ -21,7 +21,7 @@ mySwipeIt
 	console.log('mySwipeIt is on swipeRight!');
 });
 ```
-- Bang!
+- That's it!
 
 
 ## Events
