@@ -1,10 +1,10 @@
 /*===========================
-  Swipe-it v1.2.0
+  Swipe-it v1.2.1
   An event listener for swiping gestures with vanilla js.
   https://github.com/tri613/swipe-it
 
   @Create 2016/09/22
-  @Update 2016/09/23
+  @Update 2016/09/29
   @Author Trina Lu
   ===========================*/
 
@@ -78,18 +78,21 @@
 
     function touchEndHandler(e) {
       if (_xStart && _yStart && _xEnd && _yEnd) {
-        if (Math.abs(_xStart - _xEnd) > 30) { //horizontal
+        var h = Math.abs(_xStart - _xEnd);
+        var v = Math.abs(_yStart - _yEnd);
+        var d = 30;
+        if (h > d) { //horizontal
           var swipeEventString = (_xStart < _xEnd) ? 'swipeRight' : 'swipeLeft';
           triggerEvent(swipeEventString, _target);
         }
-        if (Math.abs(_yStart - _yEnd) > 30) { //vertical
+        if (v > d) { //vertical
           var swipeEventString = (_yStart > _yEnd) ? 'swipeUp' : 'swipeDown';
           triggerEvent(swipeEventString, _target);
         }
-
-        triggerEvent('swipe', _target);
+        if (h > d || v > d){
+          triggerEvent('swipe', _target);
+        }
       };
-
       init();
     }
   }
