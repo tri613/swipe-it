@@ -4,6 +4,9 @@ An event listener for swiping gestures with pure javascript only, no dependency 
 ~~Touch devices only.~~
 **Also supports mouse now!** -- 2016/09/23
 
+Here's a simple plunker demo:  
+https://plnkr.co/edit/FqCGSVcsXL3vFOruUDCL?p=preview
+
 ## Usage
 
  - include `swipe-it.js` or `swipe-it.min.js` into your file.
