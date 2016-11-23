@@ -1,0 +1,5 @@
+{
+	"version": "1.3.0",
+	"description": "An event listener for swiping gestures with vanilla js.",
+	"link": "https://github.com/tri613/swipe-it"
+}

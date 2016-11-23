@@ -1,13 +1,12 @@
 /*===========================
-  Swipe-it v1.2.1
+  Swipe-it v1.3.0
   An event listener for swiping gestures with vanilla js.
   https://github.com/tri613/swipe-it
-
+ 
   @Create 2016/09/22
-  @Update 2016/09/29
+  @Update 2016/11/23
   @Author Trina Lu
   ===========================*/
-
 (function(window, document, exportName) {
 
   'use strict';
@@ -22,7 +21,7 @@
     init();
     ready();
 
-    this.on = function(swipeEvent, callback) {
+    this.listen = function(swipeEvent, callback) {
       listen(swipeEvent, callback, _elements);
       return this;
     }

@@ -1,0 +1,24 @@
+{
+  "name": "swipe-it",
+  "version": "1.0.0",
+  "description": "An event listener for swiping gestures with pure javascript only, no dependency needed.  \r ~~Touch devices only.~~\r **Also supports mouse now!** -- 2016/09/23",
+  "main": "swipe-it.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tri613/swipe-it.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tri613/swipe-it/issues"
+  },
+  "homepage": "https://github.com/tri613/swipe-it#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-header": "^1.8.8",
+    "gulp-minify": "0.0.14"
+  }
+}
