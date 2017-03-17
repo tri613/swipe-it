@@ -20,11 +20,16 @@ https://plnkr.co/edit/FqCGSVcsXL3vFOruUDCL?p=preview
 
 ```js
 const mySwipeIt = new SwipeIt('your_element_selector_here' [,options]);
-mySwipeIt.on('swipeLeft', function(event) {
-	const swipeDistance = event.detail.distance; //the swipe distance (px)
-	console.log(`mySwipeIt is on swipeLeft with ${swipeDistance} px!`);
-}).on('swipeRight', function(event) {
-	console.log('mySwipeIt is on swipeRight!');
+
+mySwipeIt
+.on('swipeLeft', function(event) {
+    // your event handler here
+    const swipeDistance = event.detail.distance; //the swipe distance (px)
+    console.log(`mySwipeIt is on swipeLeft with ${swipeDistance} px!`);
+})
+.on('swipeRight', function(event) {
+    // your event handler here
+    console.log('mySwipeIt is on swipeRight!');
 });
 ```
 - That's it!
