@@ -1,30 +1,42 @@
 /*===========================
-  Swipe-it v1.3.0
+  Swipe-it v1.4.0
   An event listener for swiping gestures with vanilla js.
   https://github.com/tri613/swipe-it
  
   @Create 2016/09/22
-  @Update 2016/11/23
+  @Update 2017/3/17
   @Author Trina Lu
   ===========================*/
-(function(window, document, exportName) {
+'use strict';
 
-  'use strict';
+(function (window, document, exportName) {
 
   var _window = [window];
   var _target = false;
+  var defaultOptions = {
+    'mouseEvent': true,
+    'minDistance': 30
+  };
 
   function SwipeIt(selector) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     var _elements = document.querySelectorAll(selector);
-    var _xStart, _yStart, _xEnd, _yEnd;
+    var _xStart = void 0,
+        _yStart = void 0,
+        _xEnd = void 0,
+        _yEnd = void 0;
+
+    options.mouseEvent = options.mouseEvent === undefined ? defaultOptions.mouseEvent : options.mouseEvent;
+    options.minDistance = options.minDistance === undefined ? defaultOptions.minDistance : options.minDistance;
 
     init();
     ready();
 
-    this.listen = function(swipeEvent, callback) {
+    this.on = function (swipeEvent, callback) {
       listen(swipeEvent, callback, _elements);
       return this;
-    }
+    };
 
     function ready() {
       //for touching device
@@ -32,7 +44,9 @@
       listen('touchmove', touchMoveHandler, _elements);
       listen('touchend', touchEndHandler, _elements);
       //for mouse
-      listen('mousedown', mouseDownHandler, _elements);
+      if (options.mouseEvent) {
+        listen('mousedown', mouseDownHandler, _elements);
+      }
     }
 
     function init() {
@@ -46,7 +60,7 @@
     function mouseDownHandler(e) {
       _xStart = e.clientX;
       _yStart = e.clientY;
-      _target = e.target;
+      _target = this;
       listen('mousemove', mouseMoveHandler, _window);
       listen('mouseup', mouseEndHandler, _window);
     }
@@ -65,7 +79,7 @@
     }
 
     function touchStartHandler(e) {
-      _target = e.target;
+      _target = this;
       _xStart = e.touches[0].clientX;
       _yStart = e.touches[0].clientY;
     }
@@ -79,16 +93,18 @@
       if (_xStart && _yStart && _xEnd && _yEnd) {
         var h = Math.abs(_xStart - _xEnd);
         var v = Math.abs(_yStart - _yEnd);
-        var d = 30;
-        if (h > d) { //horizontal
-          var swipeEventString = (_xStart < _xEnd) ? 'swipeRight' : 'swipeLeft';
-          triggerEvent(swipeEventString, _target);
+        var d = options.minDistance;
+        if (h > d) {
+          //horizontal
+          var swipeEventString = _xStart < _xEnd ? 'swipeRight' : 'swipeLeft';
+          triggerEvent(swipeEventString, _target, { detail: { distance: h } });
         }
-        if (v > d) { //vertical
-          var swipeEventString = (_yStart > _yEnd) ? 'swipeUp' : 'swipeDown';
-          triggerEvent(swipeEventString, _target);
+        if (v > d) {
+          //vertical
+          var _swipeEventString = _yStart > _yEnd ? 'swipeUp' : 'swipeDown';
+          triggerEvent(_swipeEventString, _target, { detail: { distance: v } });
         }
-        if (h > d || v > d){
+        if (h > d || v > d) {
           triggerEvent('swipe', _target);
         }
       };
@@ -98,18 +114,20 @@
 
   function listen(event, handler, elements) {
     for (var i = 0; i < elements.length; i++) {
-      elements[i].addEventListener(event, handler);
+      elements[i].addEventListener(event, handler.bind(elements[i]));
     }
   }
 
   function stopListen(event, handler, elements) {
     for (var i = 0; i < elements.length; i++) {
-      elements[i].removeEventListener(event, handler);
+      elements[i].removeEventListener(event, handler.bind(elements[i]));
     }
   }
 
   function triggerEvent(eventString, elements) {
-    var event = new Event(eventString);
+    var extraParams = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    var event = new CustomEvent(eventString, extraParams);
     if (elements.constructor !== Array) {
       elements.dispatchEvent(event);
     } else {
@@ -121,5 +139,4 @@
 
   //export
   window[exportName] = SwipeIt;
-
 })(window, document, 'SwipeIt');

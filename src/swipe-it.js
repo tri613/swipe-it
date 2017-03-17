@@ -1,18 +1,23 @@
 (function(window, document, exportName) {
 
-  'use strict';
+  const _window = [window];
+  let _target = false;
+  const defaultOptions = {
+    'mouseEvent': true,
+    'minDistance': 30
+  };
 
-  var _window = [window];
-  var _target = false;
+  function SwipeIt(selector, options = {}) {
+    const _elements = document.querySelectorAll(selector);
+    let _xStart, _yStart, _xEnd, _yEnd;
 
-  function SwipeIt(selector) {
-    var _elements = document.querySelectorAll(selector);
-    var _xStart, _yStart, _xEnd, _yEnd;
+    options.mouseEvent = (options.mouseEvent === undefined) ? defaultOptions.mouseEvent : options.mouseEvent;
+    options.minDistance = (options.minDistance === undefined) ? defaultOptions.minDistance : options.minDistance;
 
     init();
     ready();
 
-    this.listen = function(swipeEvent, callback) {
+    this.on = function(swipeEvent, callback) {
       listen(swipeEvent, callback, _elements);
       return this;
     }
@@ -23,7 +28,9 @@
       listen('touchmove', touchMoveHandler, _elements);
       listen('touchend', touchEndHandler, _elements);
       //for mouse
-      listen('mousedown', mouseDownHandler, _elements);
+      if (options.mouseEvent) {
+        listen('mousedown', mouseDownHandler, _elements);
+      }
     }
 
     function init() {
@@ -37,7 +44,7 @@
     function mouseDownHandler(e) {
       _xStart = e.clientX;
       _yStart = e.clientY;
-      _target = e.target;
+      _target = this;
       listen('mousemove', mouseMoveHandler, _window);
       listen('mouseup', mouseEndHandler, _window);
     }
@@ -56,7 +63,7 @@
     }
 
     function touchStartHandler(e) {
-      _target = e.target;
+      _target = this;
       _xStart = e.touches[0].clientX;
       _yStart = e.touches[0].clientY;
     }
@@ -68,16 +75,16 @@
 
     function touchEndHandler(e) {
       if (_xStart && _yStart && _xEnd && _yEnd) {
-        var h = Math.abs(_xStart - _xEnd);
-        var v = Math.abs(_yStart - _yEnd);
-        var d = 30;
+        const h = Math.abs(_xStart - _xEnd);
+        const v = Math.abs(_yStart - _yEnd);
+        const d = options.minDistance;
         if (h > d) { //horizontal
-          var swipeEventString = (_xStart < _xEnd) ? 'swipeRight' : 'swipeLeft';
-          triggerEvent(swipeEventString, _target);
+          const swipeEventString = (_xStart < _xEnd) ? 'swipeRight' : 'swipeLeft';
+          triggerEvent(swipeEventString, _target, { detail: {distance: h}});
         }
         if (v > d) { //vertical
-          var swipeEventString = (_yStart > _yEnd) ? 'swipeUp' : 'swipeDown';
-          triggerEvent(swipeEventString, _target);
+          const swipeEventString = (_yStart > _yEnd) ? 'swipeUp' : 'swipeDown';
+          triggerEvent(swipeEventString, _target, { detail: {distance: v}});
         }
         if (h > d || v > d){
           triggerEvent('swipe', _target);
@@ -88,23 +95,23 @@
   }
 
   function listen(event, handler, elements) {
-    for (var i = 0; i < elements.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
       elements[i].addEventListener(event, handler);
     }
   }
 
   function stopListen(event, handler, elements) {
-    for (var i = 0; i < elements.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
       elements[i].removeEventListener(event, handler);
     }
   }
 
-  function triggerEvent(eventString, elements) {
-    var event = new Event(eventString);
+  function triggerEvent(eventString, elements, extraParams = {}) {
+    const event = new CustomEvent(eventString, extraParams);
     if (elements.constructor !== Array) {
       elements.dispatchEvent(event);
     } else {
-      for (var i = 0; i < elements.length; i++) {
+      for (let i = 0; i < elements.length; i++) {
         elements[i].dispatchEvent(event);
       }
     }

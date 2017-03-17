@@ -1,16 +1,16 @@
-#Swipe-it
+# Swipe-it
 
-An event listener for swiping gestures with pure javascript only, no dependency needed.  
+An event listener for swiping gestures with pure javascript only, no dependency needed.
 ~~Touch devices only.~~
 **Also supports mouse now!** -- 2016/09/23
 
-:warning: 2016/11/23
+:warning: 2017/03/17
 
-I decided to use the word `listen` instead since jQuery has an API named `on`,  
-and that's the only different thing in the new version v1.3.0,   
-other parts still work the same.
+I found out it's much simple and forward to use `on` instead of `listen`,
+so I changed it back.
+(Very annoying, I know)
 
-Here's a simple plunker demo:  
+Here's a simple plunker demo:
 https://plnkr.co/edit/FqCGSVcsXL3vFOruUDCL?p=preview
 
 ## Usage
@@ -19,28 +19,44 @@ https://plnkr.co/edit/FqCGSVcsXL3vFOruUDCL?p=preview
  - then use it like this:
 
 ```js
-var mySwipeIt = new SwipeIt('your_element_selector_here');
-mySwipeIt
-.listen('swipeLeft',function(e){
-	//your handler here
-	console.log('mySwipeIt is on swipeLeft!');
-})
-.listen('swipeRight',function(e){
-	//your handler here
+const mySwipeIt = new SwipeIt('your_element_selector_here' [,options]);
+mySwipeIt.on('swipeLeft', function(event) {
+    const swipeDistance = event.detail.distance; //the swipe distance (px)
+	console.log(`mySwipeIt is on swipeLeft with ${swipeDistance} px!`);
+}).on('swipeRight', function(event) {
 	console.log('mySwipeIt is on swipeRight!');
 });
 ```
 - That's it!
 
+## Options
+Type: Object
+
+- `mouseEvent` [boolean] | `true`
+
+    Whether using mouse event or not.
+
+-  `minDistance` [int] | 30 (px)
+
+    The minimal distance (px) between the start point and end point for triggering swipe events.
+
+### example
+```js
+const swipeWithOptions = new SwipeIt('#with-options', {
+    mouseEvent: false,
+    minDistance: 50
+});
+```
+
 
 ## Events
-
 - swipe (for all directions)
 - swipeLeft
 - swipeRight
 - swipeUp
 - swipeDown
 
-**NOTICE**  
-Swipe events won't trigger if the distance between start point and end point is less than `30px`.
+Every swipe event object (except `swipe`) contains a swipe distance data in `event.detail.distance`.
 
+## Bugfix
+- 2017/03/17: Swipe events are now dispatched to it's listener instead of `event.target`.
