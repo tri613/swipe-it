@@ -38,11 +38,11 @@ mySwipeIt
 ## Options [object]
 Options are optionable.
 
-- `mouseEvent` [boolean] | `true`
+- **mouseEvent** [boolean] | `true`
 
     Whether using mouse event or not.
 
-- `minDistance` [int] | `30` (px)
+- **minDistance** [int] | `30`
 
     The minimal distance (px) between the start point and end point for triggering swipe events.
 
