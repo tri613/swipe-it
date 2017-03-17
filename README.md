@@ -21,7 +21,7 @@ https://plnkr.co/edit/FqCGSVcsXL3vFOruUDCL?p=preview
 ```js
 const mySwipeIt = new SwipeIt('your_element_selector_here' [,options]);
 mySwipeIt.on('swipeLeft', function(event) {
-    const swipeDistance = event.detail.distance; //the swipe distance (px)
+	const swipeDistance = event.detail.distance; //the swipe distance (px)
 	console.log(`mySwipeIt is on swipeLeft with ${swipeDistance} px!`);
 }).on('swipeRight', function(event) {
 	console.log('mySwipeIt is on swipeRight!');
@@ -36,7 +36,7 @@ Type: Object
 
     Whether using mouse event or not.
 
--  `minDistance` [int] | 30 (px)
+-  `minDistance` [int] | `30` (px)
 
     The minimal distance (px) between the start point and end point for triggering swipe events.
 
