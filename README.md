@@ -54,7 +54,6 @@ const swipeWithOptions = new SwipeIt('#with-options', {
 });
 ```
 
-
 ## Events
 - swipe (for all directions)
 - swipeLeft
@@ -62,7 +61,16 @@ const swipeWithOptions = new SwipeIt('#with-options', {
 - swipeUp
 - swipeDown
 
-Every swipe event object (except `swipe`) contains a swipe distance data in `event.detail.distance`.
+Every swipe event (except `swipe`) contains a swipe data object which could be access by `event.swipe`.
+
+### event.swipe
+- event.swipe.distance
+	The distance between the start point and end point
+- event.swipe.start
+	The start point position, for vertical swipe events, this would be the `event.clientY` value,
+	for horizontal swipe events, this would be the `event.clientX` value of the start point.
+- event.swipe.end
+	The end point position.
 
 ## Bugfix
 - 2017/03/17: Swipe events are now dispatched to it's listener instead of `event.target`.

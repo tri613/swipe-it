@@ -1,18 +1,20 @@
 /*===========================
-  Swipe-it v1.4.0
+  Swipe-it v1.4.1
   An event listener for swiping gestures with vanilla js.
-  https://github.com/tri613/swipe-it
+  https://github.com/tri613/swipe-it#readme
  
   @Create 2016/09/22
-  @Update 2017/3/17
+  @Update 2017/3/22
   @Author Trina Lu
   ===========================*/
 'use strict';
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 (function (window, document, exportName) {
 
-  var _window = [window];
   var _target = false;
+  var _window = [window];
   var defaultOptions = {
     'mouseEvent': true,
     'minDistance': 30
@@ -21,7 +23,7 @@
   function SwipeIt(selector) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    var _elements = document.querySelectorAll(selector);
+    var _elements = nodeListToArray(document.querySelectorAll(selector));
     var _xStart = void 0,
         _yStart = void 0,
         _xEnd = void 0,
@@ -58,9 +60,9 @@
     }
 
     function mouseDownHandler(e) {
+      _target = this;
       _xStart = e.clientX;
       _yStart = e.clientY;
-      _target = this;
       listen('mousemove', mouseMoveHandler, _window);
       listen('mouseup', mouseEndHandler, _window);
     }
@@ -91,18 +93,32 @@
 
     function touchEndHandler(e) {
       if (_xStart && _yStart && _xEnd && _yEnd) {
-        var h = Math.abs(_xStart - _xEnd);
-        var v = Math.abs(_yStart - _yEnd);
+        var disH = _xStart - _xEnd,
+            disV = _yStart - _yEnd;
+
+        var _map = [disH, disV].map(Math.abs),
+            _map2 = _slicedToArray(_map, 2),
+            h = _map2[0],
+            v = _map2[1];
+
         var d = options.minDistance;
         if (h > d) {
           //horizontal
           var swipeEventString = _xStart < _xEnd ? 'swipeRight' : 'swipeLeft';
-          triggerEvent(swipeEventString, _target, { detail: { distance: h } });
+          triggerEvent(swipeEventString, _target, {
+            distance: disH,
+            start: _xStart,
+            end: _xEnd
+          });
         }
         if (v > d) {
           //vertical
           var _swipeEventString = _yStart > _yEnd ? 'swipeUp' : 'swipeDown';
-          triggerEvent(_swipeEventString, _target, { detail: { distance: v } });
+          triggerEvent(_swipeEventString, _target, {
+            distance: disV,
+            start: _yStart,
+            end: _yEnd
+          });
         }
         if (h > d || v > d) {
           triggerEvent('swipe', _target);
@@ -113,28 +129,38 @@
   }
 
   function listen(event, handler, elements) {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].addEventListener(event, handler.bind(elements[i]));
-    }
+    toArray(elements).forEach(function (element) {
+      return element.addEventListener(event, handler);
+    });
   }
 
   function stopListen(event, handler, elements) {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].removeEventListener(event, handler.bind(elements[i]));
-    }
+    toArray(elements).forEach(function (element) {
+      return element.removeEventListener(event, handler);
+    });
   }
 
   function triggerEvent(eventString, elements) {
     var extraParams = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-    var event = new CustomEvent(eventString, extraParams);
-    if (elements.constructor !== Array) {
-      elements.dispatchEvent(event);
-    } else {
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].dispatchEvent(event);
-      }
+    var event = document.createEvent('Event');
+    event.initEvent(eventString, true, true);
+    event.swipe = extraParams;
+    toArray(elements).forEach(function (element) {
+      return element.dispatchEvent(event);
+    });
+  }
+
+  function nodeListToArray(nodes) {
+    var nodesArray = [];
+    for (var i = 0; i < nodes.length; i++) {
+      nodesArray.push(nodes[i]);
     }
+    return nodesArray;
+  }
+
+  function toArray(elements) {
+    return Array.isArray(elements) ? elements : [elements];
   }
 
   //export

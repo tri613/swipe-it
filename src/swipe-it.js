@@ -1,14 +1,14 @@
 (function(window, document, exportName) {
 
-  const _window = [window];
   let _target = false;
+  const _window = [window];
   const defaultOptions = {
     'mouseEvent': true,
     'minDistance': 30
   };
 
   function SwipeIt(selector, options = {}) {
-    const _elements = document.querySelectorAll(selector);
+    const _elements = nodeListToArray(document.querySelectorAll(selector));
     let _xStart, _yStart, _xEnd, _yEnd;
 
     options.mouseEvent = (options.mouseEvent === undefined) ? defaultOptions.mouseEvent : options.mouseEvent;
@@ -42,9 +42,9 @@
     }
 
     function mouseDownHandler(e) {
+      _target = this;
       _xStart = e.clientX;
       _yStart = e.clientY;
-      _target = this;
       listen('mousemove', mouseMoveHandler, _window);
       listen('mouseup', mouseEndHandler, _window);
     }
@@ -75,18 +75,26 @@
 
     function touchEndHandler(e) {
       if (_xStart && _yStart && _xEnd && _yEnd) {
-        const h = Math.abs(_xStart - _xEnd);
-        const v = Math.abs(_yStart - _yEnd);
+        const [disH, disV] = [_xStart - _xEnd, _yStart - _yEnd];
+        const [h, v] = [disH, disV].map(Math.abs);
         const d = options.minDistance;
         if (h > d) { //horizontal
           const swipeEventString = (_xStart < _xEnd) ? 'swipeRight' : 'swipeLeft';
-          triggerEvent(swipeEventString, _target, { detail: {distance: h}});
+          triggerEvent(swipeEventString, _target, { 
+            distance: disH,
+            start: _xStart,
+            end: _xEnd
+          });
         }
         if (v > d) { //vertical
           const swipeEventString = (_yStart > _yEnd) ? 'swipeUp' : 'swipeDown';
-          triggerEvent(swipeEventString, _target, { detail: {distance: v}});
+          triggerEvent(swipeEventString, _target, { 
+            distance: disV,
+            start: _yStart,
+            end: _yEnd
+          });
         }
-        if (h > d || v > d){
+        if (h > d || v > d) {
           triggerEvent('swipe', _target);
         }
       };
@@ -95,26 +103,30 @@
   }
 
   function listen(event, handler, elements) {
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].addEventListener(event, handler);
-    }
+    toArray(elements).forEach(element => element.addEventListener(event, handler));
   }
 
   function stopListen(event, handler, elements) {
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].removeEventListener(event, handler);
-    }
+    toArray(elements).forEach(element => element.removeEventListener(event, handler));
   }
 
   function triggerEvent(eventString, elements, extraParams = {}) {
-    const event = new CustomEvent(eventString, extraParams);
-    if (elements.constructor !== Array) {
-      elements.dispatchEvent(event);
-    } else {
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].dispatchEvent(event);
-      }
+    const event = document.createEvent('Event');
+    event.initEvent(eventString, true, true);
+    event.swipe = extraParams;
+    toArray(elements).forEach(element => element.dispatchEvent(event));
+  }
+
+  function nodeListToArray(nodes) {
+    const nodesArray = [];
+    for (let i = 0; i < nodes.length; i++) {
+      nodesArray.push(nodes[i]);
     }
+    return nodesArray;
+  }
+
+  function toArray(elements) {
+    return Array.isArray(elements) ? elements : [elements];
   }
 
   //export
