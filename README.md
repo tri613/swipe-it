@@ -25,7 +25,9 @@ const mySwipeIt = new SwipeIt('your_element_selector_here' [,options]);
 mySwipeIt
 .on('swipeLeft', function(event) {
     // your event handler here
-    const swipeDistance = event.detail.distance; //the swipe distance (px)
+    const swipeStartPoint = event.swipe.start;
+    const swipeEndPoint = event.swipe.end;
+    const swipeDistance = event.swipe.distance; //the swipe distance (px)
     console.log(`mySwipeIt is on swipeLeft with ${swipeDistance} px!`);
 })
 .on('swipeRight', function(event) {
@@ -70,12 +72,12 @@ Every swipe event (except `swipe`) contains a swipe data object which could be a
 
 - `event.swipe.start`
 
-	The start point position, for vertical swipe events, this would be the `event.clientY` value,
+	The start point position. For vertical swipe events, this would be the `event.clientY` value;
 	for horizontal swipe events, this would be the `event.clientX` value of the start point.
 
 - `event.swipe.end`
 
-	The end point position.
+	Just like `event.swipe.start` instead of this is the end point poistion.
 
 ## Bugfix
 - 2017/03/17: Swipe events are now dispatched to it's listener instead of `event.target`.
