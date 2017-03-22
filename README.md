@@ -8,10 +8,10 @@ An event listener for swiping gestures with pure javascript only, no dependency 
 :warning: 2017/03/17
 
 I found out it's much simple and forward to use `on` instead of `listen`,
-so I changed it back.  
+so I changed it back.
 (Very annoying, I know)
 
-Here's a simple plunker demo:  
+Here's a simple plunker demo:
 https://plnkr.co/edit/FqCGSVcsXL3vFOruUDCL?p=preview
 
 ## Usage
@@ -61,16 +61,22 @@ const swipeWithOptions = new SwipeIt('#with-options', {
 - swipeUp
 - swipeDown
 
+### Extra event data
 Every swipe event (except `swipe`) contains a swipe data object which could be access by `event.swipe`.
 
-### event.swipe
-- event.swipe.distance
+- `event.swipe.distance`
+
 	The distance between the start point and end point
-- event.swipe.start
+
+- `event.swipe.start`
+
 	The start point position, for vertical swipe events, this would be the `event.clientY` value,
 	for horizontal swipe events, this would be the `event.clientX` value of the start point.
-- event.swipe.end
+
+- `event.swipe.end`
+
 	The end point position.
 
 ## Bugfix
 - 2017/03/17: Swipe events are now dispatched to it's listener instead of `event.target`.
+- 2017/03/22: Add support to IE11.
