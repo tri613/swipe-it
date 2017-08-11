@@ -4,7 +4,7 @@
   https://github.com/tri613/swipe-it#readme
  
   @Create 2016/09/22
-  @Update 2017/3/22
+  @Update 2017/08/11
   @Author Trina Lu
   ===========================*/
 'use strict';

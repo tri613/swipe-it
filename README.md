@@ -38,7 +38,7 @@ mySwipeIt
 - That's it!
 
 ## Options [object]
-Options are optionable.
+All options are optionable.
 
 - **mouseEvent** [boolean] | `true`
 
@@ -77,7 +77,7 @@ Every swipe event (except `swipe`) contains a swipe data object which could be a
 
 - `event.swipe.end`
 
-	Just like `event.swipe.start` instead of this is the end point poistion.
+	Just like `event.swipe.start` instead of this is the end point position.
 
 ## Bugfix
 - 2017/03/17: Swipe events are now dispatched to it's listener instead of `event.target`.

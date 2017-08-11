@@ -22,7 +22,8 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-header": "^1.8.8",
-    "gulp-minify": "0.0.14"
+    "gulp-minify": "0.0.14",
+    "moment": "^2.18.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0"

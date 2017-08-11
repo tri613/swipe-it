@@ -2,10 +2,9 @@ var gulp = require('gulp');
 var minify = require('gulp-minify');
 var header = require('gulp-header');
 var babel = require('gulp-babel');
+var moment = require('moment');
 
-var d = new Date();
-var date = (d.getDate() < 10) ? "0" + d.getDate() : d.getDate();
-var now = [d.getFullYear(), d.getMonth()+1, date].join("/");
+var now = moment().format("YYYY/MM/DD");
 var pkg = require('./package.json');
 var banner = [
   '/*===========================',
