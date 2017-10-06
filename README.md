@@ -5,12 +5,6 @@ An event listener for swiping gestures with pure javascript only, no dependency 
 
 **Also supports mouse now!** -- 2016/09/23
 
-:warning: 2017/03/17
-
-I found out it's much simple and forward to use `on` instead of `listen`,
-so I changed it back.
-(Very annoying, I know)
-
 Here's a simple plunker demo:
 https://plnkr.co/edit/FqCGSVcsXL3vFOruUDCL?p=preview
 
